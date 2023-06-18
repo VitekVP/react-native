@@ -2,13 +2,29 @@ import { useState } from "react";
 import { StyleSheet, ImageBackground, View, Text, Image, TextInput } from "react-native";
 
 const RegistrationScreen = () => {
-	const [isFocused, setIsFocused] = useState(false);
+	const [isFocusedLogin, setIsFocusedLogin] = useState(false);
+	const [isFocusedEmail, setIsFocusedEmail] = useState(false);
+	const [isFocusedPassword, setIsFocusedPassword] = useState(false);
 
-	const handleFocus = () => {
-		setIsFocused(true);
+	const handleFocusLogin = () => {
+		setIsFocusedLogin(true);
 	};
-	const handleBlur = () => {
-		setIsFocused(false);
+	const handleBlurLogin = () => {
+		setIsFocusedLogin(false);
+	};
+
+	const handleFocusEmail = () => {
+		setIsFocusedEmail(true);
+	};
+	const handleBlurEmail = () => {
+		setIsFocusedEmail(false);
+	};
+
+	const handleFocusPassword = () => {
+		setIsFocusedPassword(true);
+	};
+	const handleBlurPassword = () => {
+		setIsFocusedPassword(false);
 	};
 
 	return (
@@ -21,22 +37,23 @@ const RegistrationScreen = () => {
 					<Text style={styles.title}>Реєстрація</Text>
 					<View style={styles.form}>
 						<TextInput
-							style={[styles.input, isFocused ? styles.inputFocused : styles.input]}
-							onFocus={handleFocus}
-							onBlur={handleBlur}
+							style={[styles.input, isFocusedLogin ? styles.inputFocused : styles.input]}
+							onFocus={handleFocusLogin}
+							onBlur={handleBlurLogin}
 							placeholder="Логін"
 						/>
 						<TextInput
-							style={[styles.input, isFocused ? styles.inputFocused : styles.input]}
-							onFocus={handleFocus}
-							onBlur={handleBlur}
+							style={[styles.input, isFocusedEmail ? styles.inputFocused : styles.input]}
+							onFocus={handleFocusEmail}
+							onBlur={handleBlurEmail}
 							placeholder="Адреса електронної пошти"
 						/>
 						<View>
 							<TextInput
-								style={[styles.input, isFocused ? styles.inputFocused : styles.input]}
-								onFocus={handleFocus}
-								onBlur={handleBlur}
+								style={[styles.input, isFocusedPassword ? styles.inputFocused : styles.input]}
+								onFocus={handleFocusPassword}
+								onBlur={handleBlurPassword}
+								secureTextEntry={true}
 								placeholder="Пароль"
 							/>
 							<Text style={styles.formText}>Показати</Text>
