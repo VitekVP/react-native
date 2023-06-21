@@ -2,8 +2,8 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { useFonts } from "expo-font";
 
-import RegistrationScreen from "./src/component/RegistrationScreen";
-import LoginScreen from "./src/component/LoginScreen";
+import RegistrationScreen from "./src/Screens/RegistrationScreen";
+import LoginScreen from "./src/Screens/LoginScreen";
 import PostScreen from "./src/Screens/PostsScreen";
 
 export default function App() {
@@ -30,7 +30,5 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: "#fff",
-		// alignItems: "center",
-		// justifyContent: "center",
 	},
 });

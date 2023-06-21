@@ -1,22 +1,14 @@
 import { useState } from "react";
-import { StyleSheet, ImageBackground, View, Text, Image, TextInput } from "react-native";
+import { StyleSheet, ImageBackground, View, Text, TextInput, TouchableOpacity } from "react-native";
 
 const LoginScreen = () => {
-	const [isFocusedEmail, setIsFocusedEmail] = useState(false);
-	const [isFocusedPassword, setIsFocusedPassword] = useState(false);
+	const [activeInput, setActiveInput] = useState("");
 
-	const handleFocusEmail = () => {
-		setIsFocusedEmail(true);
+	const handleFocus = name => {
+		setActiveInput(name);
 	};
-	const handleBlurEmail = () => {
-		setIsFocusedEmail(false);
-	};
-
-	const handleFocusPassword = () => {
-		setIsFocusedPassword(true);
-	};
-	const handleBlurPassword = () => {
-		setIsFocusedPassword(false);
+	const handleBlur = () => {
+		setActiveInput("");
 	};
 
 	return (
@@ -26,25 +18,25 @@ const LoginScreen = () => {
 					<Text style={styles.title}>Увійти</Text>
 					<View style={styles.form}>
 						<TextInput
-							style={[styles.input, isFocusedEmail ? styles.inputFocused : styles.input]}
-							onFocus={handleFocusEmail}
-							onBlur={handleBlurEmail}
+							style={activeInput === "email" ? styles.activeInput : styles.input}
+							onFocus={() => handleFocus("email")}
+							onBlur={handleBlur}
 							placeholder="Адреса електронної пошти"
 						/>
 						<View>
 							<TextInput
-								style={[styles.input, isFocusedPassword ? styles.inputFocused : styles.input]}
-								onFocus={handleFocusPassword}
-								onBlur={handleBlurPassword}
+								style={activeInput === "password" ? styles.activeInput : styles.input}
+								onFocus={() => handleFocus("password")}
+								onBlur={handleBlur}
 								secureTextEntry={true}
 								placeholder="Пароль"
 							/>
 							<Text style={styles.formText}>Показати</Text>
 						</View>
 					</View>
-					<View style={styles.btn}>
+					<TouchableOpacity style={styles.btn}>
 						<Text style={styles.btnText}>Увійти</Text>
-					</View>
+					</TouchableOpacity>
 					<Text style={styles.textLink}>Немає акаунту? Зареєструватися</Text>
 					<View style={styles.indicator}></View>
 				</View>
@@ -100,13 +92,17 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: "#E8E8E8",
 		fontSize: 16,
-		color: "#212121",
 	},
 
-	inputFocused: {
+	activeInput: {
+		height: 50,
+		paddingLeft: 16,
 		borderWidth: 1,
+		borderRadius: 8,
 		borderColor: "#FF6C00",
 		backgroundColor: "#FFFFFF",
+		fontSize: 16,
+		color: "#212121",
 	},
 
 	formText: {

@@ -1,21 +1,26 @@
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { Feather, Ionicons, AntDesign } from "@expo/vector-icons";
 
 const PostScreen = () => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
 				<Text style={styles.title}>Публікації</Text>
-				<Image source={require("../../assets/images/log-out-icon.png")} style={styles.logOutIcon} />
+				<Feather name="log-out" size={24} style={styles.logOutIcon} />
 			</View>
 			<View></View>
 			<View>
 				<View style={styles.tabBar}>
-					<Image source={require("../../assets/images/grid-icon.png")} style={styles.gridIcon} />
-
-					<View style={styles.btn}>
-						<Image source={require("../../assets/images/union-icon.png")} style={styles.unionIcon} />
+					<View style={styles.gridIcon}>
+						<Ionicons name="grid-outline" size={24} color="#21212150" />
 					</View>
-					<Image source={require("../../assets/images/user-icon.png")} style={styles.userIcon} />
+
+					<TouchableOpacity style={styles.btn}>
+						<AntDesign name="plus" size={13} color="#ffffff" />
+					</TouchableOpacity>
+					<View style={styles.userIcon}>
+						<Feather name="user" size={24} color="#21212150" />
+					</View>
 				</View>
 				<View style={styles.indicator}></View>
 			</View>
@@ -43,11 +48,10 @@ const styles = StyleSheet.create({
 	},
 
 	logOutIcon: {
-		width: 24,
-		height: 24,
 		position: "absolute",
 		bottom: 10,
 		right: 16,
+		color: "#BDBDBD",
 	},
 
 	tabBar: {
@@ -74,16 +78,17 @@ const styles = StyleSheet.create({
 	gridIcon: {
 		width: 40,
 		height: 40,
-	},
-
-	unionIcon: {
-		width: 13,
-		height: 13,
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
 	},
 
 	userIcon: {
 		width: 40,
 		height: 40,
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
 	},
 
 	indicator: {

@@ -1,67 +1,56 @@
 import { useState } from "react";
-import { StyleSheet, ImageBackground, View, Text, Image, TextInput } from "react-native";
+import { StyleSheet, ImageBackground, View, Text, TextInput, TouchableOpacity } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 
 const RegistrationScreen = () => {
-	const [isFocusedLogin, setIsFocusedLogin] = useState(false);
-	const [isFocusedEmail, setIsFocusedEmail] = useState(false);
-	const [isFocusedPassword, setIsFocusedPassword] = useState(false);
+	const [activeInput, setActiveInput] = useState("");
 
-	const handleFocusLogin = () => {
-		setIsFocusedLogin(true);
+	const handleFocus = name => {
+		setActiveInput(name);
 	};
-	const handleBlurLogin = () => {
-		setIsFocusedLogin(false);
-	};
-
-	const handleFocusEmail = () => {
-		setIsFocusedEmail(true);
-	};
-	const handleBlurEmail = () => {
-		setIsFocusedEmail(false);
-	};
-
-	const handleFocusPassword = () => {
-		setIsFocusedPassword(true);
-	};
-	const handleBlurPassword = () => {
-		setIsFocusedPassword(false);
+	const handleBlur = () => {
+		setActiveInput("");
 	};
 
 	return (
 		<View style={styles.container}>
 			<ImageBackground source={require("../../assets/images/fone.png")} style={styles.imageFone}>
 				<View style={styles.fotoWrapp}>
-					<Image source={require("../../assets/images/add-icon.png")} style={styles.addIcon} />
+					<View style={styles.addIconWrap}>
+						<AntDesign name="pluscircleo" size={25} style={styles.addIcon} />
+					</View>
 				</View>
 				<View style={styles.boxForm}>
 					<Text style={styles.title}>Реєстрація</Text>
 					<View style={styles.form}>
 						<TextInput
-							style={[styles.input, isFocusedLogin ? styles.inputFocused : styles.input]}
-							onFocus={handleFocusLogin}
-							onBlur={handleBlurLogin}
+							style={activeInput === "login" ? styles.activeInput : styles.input}
+							onFocus={() => handleFocus("login")}
+							onBlur={handleBlur}
 							placeholder="Логін"
 						/>
 						<TextInput
-							style={[styles.input, isFocusedEmail ? styles.inputFocused : styles.input]}
-							onFocus={handleFocusEmail}
-							onBlur={handleBlurEmail}
+							style={activeInput === "email" ? styles.activeInput : styles.input}
+							onFocus={() => handleFocus("email")}
+							onBlur={handleBlur}
 							placeholder="Адреса електронної пошти"
 						/>
 						<View>
 							<TextInput
-								style={[styles.input, isFocusedPassword ? styles.inputFocused : styles.input]}
-								onFocus={handleFocusPassword}
-								onBlur={handleBlurPassword}
+								style={activeInput === "password" ? styles.activeInput : styles.input}
+								onFocus={() => handleFocus("password")}
+								onBlur={handleBlur}
 								secureTextEntry={true}
 								placeholder="Пароль"
 							/>
 							<Text style={styles.formText}>Показати</Text>
 						</View>
 					</View>
-					<View style={styles.btn}>
-						<Text style={styles.btnText}>Зареєстуватися</Text>
-					</View>
+					<TouchableOpacity style={styles.btn}>
+						<Text title="Зареєстуватися" style={styles.btnText}>
+							Зареєстуватися
+						</Text>
+					</TouchableOpacity>
 					<Text style={styles.textLink}>Вже є акаунт? Увійти</Text>
 					<View style={styles.indicator}></View>
 				</View>
@@ -69,6 +58,8 @@ const RegistrationScreen = () => {
 		</View>
 	);
 };
+
+export default RegistrationScreen;
 
 const styles = StyleSheet.create({
 	container: {
@@ -93,13 +84,20 @@ const styles = StyleSheet.create({
 		zIndex: 1,
 	},
 
-	addIcon: {
+	addIconWrap: {
 		width: 25,
 		height: 25,
+		borderRadius: 50,
+		overflow: "hidden",
 		position: "absolute",
 		bottom: 14,
 		right: -12.5,
 		zIndex: 2,
+	},
+
+	addIcon: {
+		color: "#FF6C00",
+		backgroundColor: "#ffffff",
 	},
 
 	boxForm: {
@@ -136,13 +134,17 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: "#E8E8E8",
 		fontSize: 16,
-		color: "#212121",
 	},
 
-	inputFocused: {
+	activeInput: {
+		height: 50,
+		paddingLeft: 16,
 		borderWidth: 1,
+		borderRadius: 8,
 		borderColor: "#FF6C00",
 		backgroundColor: "#FFFFFF",
+		fontSize: 16,
+		color: "#212121",
 	},
 
 	formText: {
@@ -185,5 +187,3 @@ const styles = StyleSheet.create({
 		bottom: 0,
 	},
 });
-
-export default RegistrationScreen;
