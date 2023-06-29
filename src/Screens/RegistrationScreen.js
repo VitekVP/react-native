@@ -1,9 +1,23 @@
 import { useState } from "react";
-import { StyleSheet, ImageBackground, View, Text, TextInput, TouchableOpacity } from "react-native";
+import {
+	StyleSheet,
+	ImageBackground,
+	View,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	TouchableWithoutFeedback,
+	Keyboard,
+	KeyboardAvoidingView,
+	Platform,
+} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
 const RegistrationScreen = () => {
 	const [activeInput, setActiveInput] = useState("");
+	const [login, setLogin] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
 
 	const handleFocus = name => {
 		setActiveInput(name);
@@ -12,8 +26,18 @@ const RegistrationScreen = () => {
 		setActiveInput("");
 	};
 
+	const handleRegister = () => {
+		const formData = { login, email, password };
+
+		console.log(formData);
+
+		setLogin("");
+		setEmail("");
+		setPassword("");
+	};
+
 	return (
-		<View style={styles.container}>
+		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<ImageBackground source={require("../../assets/images/fone.png")} style={styles.imageFone}>
 				<View style={styles.fotoWrapp}>
 					<View style={styles.addIconWrap}>
@@ -22,50 +46,54 @@ const RegistrationScreen = () => {
 				</View>
 				<View style={styles.boxForm}>
 					<Text style={styles.title}>Реєстрація</Text>
-					<View style={styles.form}>
-						<TextInput
-							style={activeInput === "login" ? styles.activeInput : styles.input}
-							onFocus={() => handleFocus("login")}
-							onBlur={handleBlur}
-							placeholder="Логін"
-						/>
-						<TextInput
-							style={activeInput === "email" ? styles.activeInput : styles.input}
-							onFocus={() => handleFocus("email")}
-							onBlur={handleBlur}
-							placeholder="Адреса електронної пошти"
-						/>
-						<View>
+					<KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
+						<View style={styles.form}>
 							<TextInput
-								style={activeInput === "password" ? styles.activeInput : styles.input}
-								onFocus={() => handleFocus("password")}
+								value={login}
+								style={activeInput === "login" ? styles.activeInput : styles.input}
+								onFocus={() => handleFocus("login")}
 								onBlur={handleBlur}
-								secureTextEntry={true}
-								placeholder="Пароль"
+								onChangeText={setLogin}
+								placeholder="Логін"
 							/>
-							<Text style={styles.formText}>Показати</Text>
+							<TextInput
+								value={email}
+								style={activeInput === "email" ? styles.activeInput : styles.input}
+								onFocus={() => handleFocus("email")}
+								onBlur={handleBlur}
+								onChangeText={setEmail}
+								placeholder="Адреса електронної пошти"
+							/>
+							<View>
+								<TextInput
+									value={password}
+									style={activeInput === "password" ? styles.activeInput : styles.input}
+									onFocus={() => handleFocus("password")}
+									onBlur={handleBlur}
+									secureTextEntry={true}
+									onChangeText={setPassword}
+									placeholder="Пароль"
+								/>
+								<Text style={styles.formText}>Показати</Text>
+							</View>
 						</View>
-					</View>
-					<TouchableOpacity style={styles.btn}>
-						<Text title="Зареєстуватися" style={styles.btnText}>
-							Зареєстуватися
-						</Text>
-					</TouchableOpacity>
+						<TouchableOpacity style={styles.btn} onPress={handleRegister}>
+							<Text title="Зареєстуватися" style={styles.btnText}>
+								Зареєстуватися
+							</Text>
+						</TouchableOpacity>
+					</KeyboardAvoidingView>
 					<Text style={styles.textLink}>Вже є акаунт? Увійти</Text>
 					<View style={styles.indicator}></View>
 				</View>
 			</ImageBackground>
-		</View>
+		</TouchableWithoutFeedback>
 	);
 };
 
 export default RegistrationScreen;
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-
 	imageFone: {
 		flex: 1,
 		justifyContent: "flex-end",

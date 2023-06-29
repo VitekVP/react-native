@@ -1,8 +1,21 @@
 import { useState } from "react";
-import { StyleSheet, ImageBackground, View, Text, TextInput, TouchableOpacity } from "react-native";
+import {
+	StyleSheet,
+	ImageBackground,
+	View,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	TouchableWithoutFeedback,
+	Keyboard,
+	KeyboardAvoidingView,
+	Platform,
+} from "react-native";
 
 const LoginScreen = () => {
 	const [activeInput, setActiveInput] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
 
 	const handleFocus = name => {
 		setActiveInput(name);
@@ -11,45 +24,58 @@ const LoginScreen = () => {
 		setActiveInput("");
 	};
 
+	const handleLogIn = () => {
+		const formData = { email, password };
+
+		console.log(formData);
+
+		setEmail("");
+		setPassword("");
+	};
+
 	return (
-		<View style={styles.container}>
+		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<ImageBackground source={require("../../assets/images/fone.png")} style={styles.imageFone}>
 				<View style={styles.boxForm}>
 					<Text style={styles.title}>Увійти</Text>
-					<View style={styles.form}>
-						<TextInput
-							style={activeInput === "email" ? styles.activeInput : styles.input}
-							onFocus={() => handleFocus("email")}
-							onBlur={handleBlur}
-							placeholder="Адреса електронної пошти"
-						/>
-						<View>
+
+					<KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
+						<View style={styles.form}>
 							<TextInput
-								style={activeInput === "password" ? styles.activeInput : styles.input}
-								onFocus={() => handleFocus("password")}
+								value={email}
+								style={activeInput === "email" ? styles.activeInput : styles.input}
+								onFocus={() => handleFocus("email")}
 								onBlur={handleBlur}
-								secureTextEntry={true}
-								placeholder="Пароль"
+								onChangeText={setEmail}
+								placeholder="Адреса електронної пошти"
 							/>
-							<Text style={styles.formText}>Показати</Text>
+							<View>
+								<TextInput
+									value={password}
+									style={activeInput === "password" ? styles.activeInput : styles.input}
+									onFocus={() => handleFocus("password")}
+									onBlur={handleBlur}
+									onChangeText={setPassword}
+									secureTextEntry={true}
+									placeholder="Пароль"
+								/>
+								<Text style={styles.formText}>Показати</Text>
+							</View>
 						</View>
-					</View>
-					<TouchableOpacity style={styles.btn}>
-						<Text style={styles.btnText}>Увійти</Text>
-					</TouchableOpacity>
+						<TouchableOpacity style={styles.btn} onPress={handleLogIn}>
+							<Text style={styles.btnText}>Увійти</Text>
+						</TouchableOpacity>
+					</KeyboardAvoidingView>
+
 					<Text style={styles.textLink}>Немає акаунту? Зареєструватися</Text>
 					<View style={styles.indicator}></View>
 				</View>
 			</ImageBackground>
-		</View>
+		</TouchableWithoutFeedback>
 	);
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-
 	imageFone: {
 		flex: 1,
 		justifyContent: "flex-end",
