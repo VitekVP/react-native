@@ -38,19 +38,23 @@ const RegistrationScreen = () => {
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-			<ImageBackground source={require("../../assets/images/fone.png")} style={styles.imageFone}>
-				<View style={styles.fotoWrapp}>
-					<View style={styles.addIconWrap}>
-						<AntDesign name="pluscircleo" size={25} style={styles.addIcon} />
+			<KeyboardAvoidingView
+				style={styles.wrapper}
+				behavior={Platform.OS === "ios" ? "padding" : "height"}
+				keyboardVerticalOffset={-203}
+			>
+				<ImageBackground source={require("../../assets/images/fone.png")} style={styles.imageFone}>
+					<View style={styles.fotoWrapp}>
+						<View style={styles.addIconWrap}>
+							<AntDesign name="pluscircleo" size={25} style={styles.addIcon} />
+						</View>
 					</View>
-				</View>
-				<View style={styles.boxForm}>
-					<Text style={styles.title}>Реєстрація</Text>
-					<KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
+					<View style={styles.boxForm}>
+						<Text style={styles.title}>Реєстрація</Text>
 						<View style={styles.form}>
 							<TextInput
 								value={login}
-								style={activeInput === "login" ? styles.activeInput : styles.input}
+								style={[styles.input, activeInput === "login" && styles.activeInput]}
 								onFocus={() => handleFocus("login")}
 								onBlur={handleBlur}
 								onChangeText={setLogin}
@@ -58,7 +62,7 @@ const RegistrationScreen = () => {
 							/>
 							<TextInput
 								value={email}
-								style={activeInput === "email" ? styles.activeInput : styles.input}
+								style={[styles.input, activeInput === "email" && styles.activeInput]}
 								onFocus={() => handleFocus("email")}
 								onBlur={handleBlur}
 								onChangeText={setEmail}
@@ -67,7 +71,7 @@ const RegistrationScreen = () => {
 							<View>
 								<TextInput
 									value={password}
-									style={activeInput === "password" ? styles.activeInput : styles.input}
+									style={[styles.input, activeInput === "password" && styles.activeInput]}
 									onFocus={() => handleFocus("password")}
 									onBlur={handleBlur}
 									secureTextEntry={true}
@@ -78,15 +82,13 @@ const RegistrationScreen = () => {
 							</View>
 						</View>
 						<TouchableOpacity style={styles.btn} onPress={handleRegister}>
-							<Text title="Зареєстуватися" style={styles.btnText}>
-								Зареєстуватися
-							</Text>
+							<Text style={styles.btnText}>Зареєстуватися</Text>
 						</TouchableOpacity>
-					</KeyboardAvoidingView>
-					<Text style={styles.textLink}>Вже є акаунт? Увійти</Text>
-					<View style={styles.indicator}></View>
-				</View>
-			</ImageBackground>
+						<Text style={styles.textLink}>Вже є акаунт? Увійти</Text>
+						<View style={styles.indicator}></View>
+					</View>
+				</ImageBackground>
+			</KeyboardAvoidingView>
 		</TouchableWithoutFeedback>
 	);
 };
@@ -94,6 +96,11 @@ const RegistrationScreen = () => {
 export default RegistrationScreen;
 
 const styles = StyleSheet.create({
+	wrapper: {
+		flex: 1,
+		justifyContent: "flex-end",
+	},
+
 	imageFone: {
 		flex: 1,
 		justifyContent: "flex-end",
@@ -130,28 +137,30 @@ const styles = StyleSheet.create({
 
 	boxForm: {
 		width: "100%",
-		height: 549,
-		paddingLeft: 16,
+		// height: 549,
+		paddingTop: 92,
 		paddingRight: 16,
+		paddingBottom: 78,
+		paddingLeft: 16,
 		backgroundColor: "#FFFFFF",
 		borderTopLeftRadius: 25,
 		borderTopRightRadius: 25,
 	},
 
 	title: {
+		marginBottom: 32,
 		alignSelf: "center",
-		marginTop: 92,
 		fontSize: 30,
 		fontWeight: 500,
 		color: "#212121",
+		lineHeight: 35.16,
 	},
 
 	form: {
-		height: 182,
-		marginTop: 32,
 		display: "flex",
 		justifyContent: "space-between",
 		gap: 16,
+		marginBottom: 43,
 	},
 
 	input: {
@@ -162,17 +171,13 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: "#E8E8E8",
 		fontSize: 16,
+		lineHeight: 18.75,
+		color: "#212121",
 	},
 
 	activeInput: {
-		height: 50,
-		paddingLeft: 16,
-		borderWidth: 1,
-		borderRadius: 8,
 		borderColor: "#FF6C00",
 		backgroundColor: "#FFFFFF",
-		fontSize: 16,
-		color: "#212121",
 	},
 
 	formText: {
@@ -185,7 +190,7 @@ const styles = StyleSheet.create({
 
 	btn: {
 		height: 51,
-		marginTop: 43,
+		marginBottom: 16,
 		justifyContent: "center",
 		alignItems: "center",
 		backgroundColor: "#FF6C00",
@@ -198,7 +203,6 @@ const styles = StyleSheet.create({
 	},
 
 	textLink: {
-		marginTop: 16,
 		textAlign: "center",
 		fontSize: 16,
 		color: "#1B4371",
@@ -213,5 +217,6 @@ const styles = StyleSheet.create({
 		alignSelf: "center",
 		position: "absolute",
 		bottom: 0,
+		zIndex: 10,
 	},
 });

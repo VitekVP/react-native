@@ -35,15 +35,18 @@ const LoginScreen = () => {
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-			<ImageBackground source={require("../../assets/images/fone.png")} style={styles.imageFone}>
-				<View style={styles.boxForm}>
-					<Text style={styles.title}>Увійти</Text>
-
-					<KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
+			<KeyboardAvoidingView
+				style={styles.wrapper}
+				behavior={Platform.OS == "ios" ? "padding" : "height"}
+				keyboardVerticalOffset={-273}
+			>
+				<ImageBackground source={require("../../assets/images/fone.png")} style={styles.imageFone}>
+					<View style={styles.boxForm}>
+						<Text style={styles.title}>Увійти</Text>
 						<View style={styles.form}>
 							<TextInput
 								value={email}
-								style={activeInput === "email" ? styles.activeInput : styles.input}
+								style={[styles.input, activeInput === "email" && styles.activeInput]}
 								onFocus={() => handleFocus("email")}
 								onBlur={handleBlur}
 								onChangeText={setEmail}
@@ -52,7 +55,7 @@ const LoginScreen = () => {
 							<View>
 								<TextInput
 									value={password}
-									style={activeInput === "password" ? styles.activeInput : styles.input}
+									style={[styles.input, activeInput === "password" && styles.activeInput]}
 									onFocus={() => handleFocus("password")}
 									onBlur={handleBlur}
 									onChangeText={setPassword}
@@ -65,17 +68,21 @@ const LoginScreen = () => {
 						<TouchableOpacity style={styles.btn} onPress={handleLogIn}>
 							<Text style={styles.btnText}>Увійти</Text>
 						</TouchableOpacity>
-					</KeyboardAvoidingView>
-
-					<Text style={styles.textLink}>Немає акаунту? Зареєструватися</Text>
-					<View style={styles.indicator}></View>
-				</View>
-			</ImageBackground>
+						<Text style={styles.textLink}>Немає акаунту? Зареєструватися</Text>
+						<View style={styles.indicator}></View>
+					</View>
+				</ImageBackground>
+			</KeyboardAvoidingView>
 		</TouchableWithoutFeedback>
 	);
 };
 
 const styles = StyleSheet.create({
+	wrapper: {
+		flex: 1,
+		justifyContent: "flex-end",
+	},
+
 	imageFone: {
 		flex: 1,
 		justifyContent: "flex-end",
@@ -86,9 +93,11 @@ const styles = StyleSheet.create({
 
 	boxForm: {
 		width: "100%",
-		height: 489,
-		paddingLeft: 16,
+		// height: 489,
+		paddingTop: 32,
 		paddingRight: 16,
+		paddingLeft: 16,
+		paddingBottom: 144,
 		backgroundColor: "#FFFFFF",
 		borderTopLeftRadius: 25,
 		borderTopRightRadius: 25,
@@ -96,15 +105,16 @@ const styles = StyleSheet.create({
 
 	title: {
 		alignSelf: "center",
-		marginTop: 32,
+		marginBottom: 32,
 		fontSize: 30,
 		fontWeight: 500,
+		lineHeight: 35.16,
 		color: "#212121",
 	},
 
 	form: {
 		height: 116,
-		marginTop: 32,
+		marginBottom: 43,
 		display: "flex",
 		justifyContent: "space-between",
 		gap: 16,
@@ -118,17 +128,13 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: "#E8E8E8",
 		fontSize: 16,
+		lineHeight: 18.75,
+		color: "#212121",
 	},
 
 	activeInput: {
-		height: 50,
-		paddingLeft: 16,
-		borderWidth: 1,
-		borderRadius: 8,
 		borderColor: "#FF6C00",
 		backgroundColor: "#FFFFFF",
-		fontSize: 16,
-		color: "#212121",
 	},
 
 	formText: {
@@ -141,7 +147,7 @@ const styles = StyleSheet.create({
 
 	btn: {
 		height: 51,
-		marginTop: 43,
+		marginBottom: 16,
 		justifyContent: "center",
 		alignItems: "center",
 		backgroundColor: "#FF6C00",
@@ -154,7 +160,6 @@ const styles = StyleSheet.create({
 	},
 
 	textLink: {
-		marginTop: 16,
 		textAlign: "center",
 		fontSize: 16,
 		color: "#1B4371",
