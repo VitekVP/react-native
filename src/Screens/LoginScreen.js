@@ -16,6 +16,7 @@ const LoginScreen = () => {
 	const [activeInput, setActiveInput] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [showPassword, setShowPassword] = useState(false);
 
 	const handleFocus = name => {
 		setActiveInput(name);
@@ -23,6 +24,8 @@ const LoginScreen = () => {
 	const handleBlur = () => {
 		setActiveInput("");
 	};
+
+	const handleShowPassword = () => setShowPassword(!showPassword);
 
 	const handleLogIn = () => {
 		const formData = { email, password };
@@ -51,6 +54,7 @@ const LoginScreen = () => {
 								onBlur={handleBlur}
 								onChangeText={setEmail}
 								placeholder="Адреса електронної пошти"
+								keyboardType="email-address"
 							/>
 							<View>
 								<TextInput
@@ -59,10 +63,12 @@ const LoginScreen = () => {
 									onFocus={() => handleFocus("password")}
 									onBlur={handleBlur}
 									onChangeText={setPassword}
-									secureTextEntry={true}
+									secureTextEntry={!showPassword}
 									placeholder="Пароль"
 								/>
-								<Text style={styles.formText}>Показати</Text>
+								<TouchableOpacity style={styles.formTextWrap} onPress={handleShowPassword}>
+									<Text style={styles.formText}>{!showPassword ? "Показати" : "Приховати"}</Text>
+								</TouchableOpacity>
 							</View>
 						</View>
 						<TouchableOpacity style={styles.btn} onPress={handleLogIn}>
@@ -137,12 +143,15 @@ const styles = StyleSheet.create({
 		backgroundColor: "#FFFFFF",
 	},
 
-	formText: {
-		color: "#1B4371",
-		fontSize: 16,
+	formTextWrap: {
 		position: "absolute",
 		right: 16,
 		top: 12.5,
+	},
+
+	formText: {
+		color: "#1B4371",
+		fontSize: 16,
 	},
 
 	btn: {

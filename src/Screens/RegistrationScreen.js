@@ -18,6 +18,7 @@ const RegistrationScreen = () => {
 	const [login, setLogin] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [showPassword, setShowPassword] = useState(false);
 
 	const handleFocus = name => {
 		setActiveInput(name);
@@ -25,6 +26,8 @@ const RegistrationScreen = () => {
 	const handleBlur = () => {
 		setActiveInput("");
 	};
+
+	const handleShowPassword = () => setShowPassword(!showPassword);
 
 	const handleRegister = () => {
 		const formData = { login, email, password };
@@ -67,6 +70,7 @@ const RegistrationScreen = () => {
 								onBlur={handleBlur}
 								onChangeText={setEmail}
 								placeholder="Адреса електронної пошти"
+								keyboardType="email-address"
 							/>
 							<View>
 								<TextInput
@@ -74,11 +78,13 @@ const RegistrationScreen = () => {
 									style={[styles.input, activeInput === "password" && styles.activeInput]}
 									onFocus={() => handleFocus("password")}
 									onBlur={handleBlur}
-									secureTextEntry={true}
+									secureTextEntry={!showPassword}
 									onChangeText={setPassword}
 									placeholder="Пароль"
 								/>
-								<Text style={styles.formText}>Показати</Text>
+								<TouchableOpacity style={styles.formTextWrap} onPress={handleShowPassword}>
+									<Text style={styles.formText}>{!showPassword ? "Показати" : "Приховати"}</Text>
+								</TouchableOpacity>
 							</View>
 						</View>
 						<TouchableOpacity style={styles.btn} onPress={handleRegister}>
@@ -180,12 +186,15 @@ const styles = StyleSheet.create({
 		backgroundColor: "#FFFFFF",
 	},
 
-	formText: {
-		color: "#1B4371",
-		fontSize: 16,
+	formTextWrap: {
 		position: "absolute",
 		right: 16,
 		top: 12.5,
+	},
+
+	formText: {
+		color: "#1B4371",
+		fontSize: 16,
 	},
 
 	btn: {
