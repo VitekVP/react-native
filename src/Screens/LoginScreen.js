@@ -11,12 +11,14 @@ import {
 	KeyboardAvoidingView,
 	Platform,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const LoginScreen = () => {
 	const [activeInput, setActiveInput] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
+	const navigation = useNavigation();
 
 	const handleFocus = name => {
 		setActiveInput(name);
@@ -28,9 +30,15 @@ const LoginScreen = () => {
 	const handleShowPassword = () => setShowPassword(!showPassword);
 
 	const handleLogIn = () => {
+		if (email === "" || password === "") {
+			return;
+		}
+
 		const formData = { email, password };
 
 		console.log(formData);
+
+		navigation.navigate("BottomTab");
 
 		setEmail("");
 		setPassword("");
@@ -52,7 +60,7 @@ const LoginScreen = () => {
 								style={[styles.input, activeInput === "email" && styles.activeInput]}
 								onFocus={() => handleFocus("email")}
 								onBlur={handleBlur}
-								onChangeText={setEmail}
+								onChangeText={text => setEmail(text.trim())}
 								placeholder="Адреса електронної пошти"
 								keyboardType="email-address"
 							/>
@@ -62,7 +70,7 @@ const LoginScreen = () => {
 									style={[styles.input, activeInput === "password" && styles.activeInput]}
 									onFocus={() => handleFocus("password")}
 									onBlur={handleBlur}
-									onChangeText={setPassword}
+									onChangeText={text => setPassword(text.trim())}
 									secureTextEntry={!showPassword}
 									placeholder="Пароль"
 								/>
@@ -74,14 +82,17 @@ const LoginScreen = () => {
 						<TouchableOpacity style={styles.btn} onPress={handleLogIn}>
 							<Text style={styles.btnText}>Увійти</Text>
 						</TouchableOpacity>
-						<Text style={styles.textLink}>Немає акаунту? Зареєструватися</Text>
-						<View style={styles.indicator}></View>
+						<TouchableOpacity onPress={() => navigation.navigate("Registration")}>
+							<Text style={styles.textLink}>Немає акаунту? Зареєструватися</Text>
+						</TouchableOpacity>
 					</View>
 				</ImageBackground>
 			</KeyboardAvoidingView>
 		</TouchableWithoutFeedback>
 	);
 };
+
+export default LoginScreen;
 
 const styles = StyleSheet.create({
 	wrapper: {
@@ -173,17 +184,4 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		color: "#1B4371",
 	},
-
-	indicator: {
-		width: 134,
-		height: 5,
-		backgroundColor: "#212121",
-		borderRadius: 100,
-		marginBottom: 8,
-		alignSelf: "center",
-		position: "absolute",
-		bottom: 0,
-	},
 });
-
-export default LoginScreen;

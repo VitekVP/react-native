@@ -11,6 +11,7 @@ import {
 	KeyboardAvoidingView,
 	Platform,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 
 const RegistrationScreen = () => {
@@ -19,6 +20,7 @@ const RegistrationScreen = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
+	const navigation = useNavigation();
 
 	const handleFocus = name => {
 		setActiveInput(name);
@@ -30,9 +32,15 @@ const RegistrationScreen = () => {
 	const handleShowPassword = () => setShowPassword(!showPassword);
 
 	const handleRegister = () => {
+		if (login === "" || email === "" || password === "") {
+			return;
+		}
+
 		const formData = { login, email, password };
 
 		console.log(formData);
+
+		navigation.navigate("BottomTab");
 
 		setLogin("");
 		setEmail("");
@@ -60,7 +68,7 @@ const RegistrationScreen = () => {
 								style={[styles.input, activeInput === "login" && styles.activeInput]}
 								onFocus={() => handleFocus("login")}
 								onBlur={handleBlur}
-								onChangeText={setLogin}
+								onChangeText={text => setLogin(text.trim())}
 								placeholder="Логін"
 							/>
 							<TextInput
@@ -68,7 +76,7 @@ const RegistrationScreen = () => {
 								style={[styles.input, activeInput === "email" && styles.activeInput]}
 								onFocus={() => handleFocus("email")}
 								onBlur={handleBlur}
-								onChangeText={setEmail}
+								onChangeText={text => setEmail(text.trim())}
 								placeholder="Адреса електронної пошти"
 								keyboardType="email-address"
 							/>
@@ -79,7 +87,7 @@ const RegistrationScreen = () => {
 									onFocus={() => handleFocus("password")}
 									onBlur={handleBlur}
 									secureTextEntry={!showPassword}
-									onChangeText={setPassword}
+									onChangeText={text => setPassword(text.trim())}
 									placeholder="Пароль"
 								/>
 								<TouchableOpacity style={styles.formTextWrap} onPress={handleShowPassword}>
@@ -90,8 +98,9 @@ const RegistrationScreen = () => {
 						<TouchableOpacity style={styles.btn} onPress={handleRegister}>
 							<Text style={styles.btnText}>Зареєстуватися</Text>
 						</TouchableOpacity>
-						<Text style={styles.textLink}>Вже є акаунт? Увійти</Text>
-						<View style={styles.indicator}></View>
+						<TouchableOpacity onPress={() => navigation.navigate("Login")}>
+							<Text style={styles.textLink}>Вже є акаунт? Увійти</Text>
+						</TouchableOpacity>
 					</View>
 				</ImageBackground>
 			</KeyboardAvoidingView>
@@ -215,17 +224,5 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		fontSize: 16,
 		color: "#1B4371",
-	},
-
-	indicator: {
-		width: 134,
-		height: 5,
-		backgroundColor: "#212121",
-		borderRadius: 100,
-		marginBottom: 8,
-		alignSelf: "center",
-		position: "absolute",
-		bottom: 0,
-		zIndex: 10,
 	},
 });
