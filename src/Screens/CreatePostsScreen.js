@@ -67,14 +67,15 @@ const styles = StyleSheet.create({
 	},
 
 	wrapBoxFoto: {
-		marginTop: 26,
+		marginTop: 32,
 		marginBottom: 8,
-		borderRadius: 8,
-		// overflow: "hidden",
 	},
 
 	boxFoto: {
 		height: 240,
+		borderWidth: 1,
+		borderColor: "#BDBDBD",
+		borderRadius: 8,
 		backgroundColor: "#E8E8E8",
 	},
 
@@ -99,8 +100,8 @@ const styles = StyleSheet.create({
 	form: {
 		display: "flex",
 		gap: 16,
-		marginTop: 28,
-		marginBottom: 28,
+		marginTop: 32,
+		marginBottom: 32,
 	},
 
 	input: {
@@ -118,7 +119,6 @@ const styles = StyleSheet.create({
 
 	btn: {
 		height: 51,
-		marginBottom: 88,
 		justifyContent: "center",
 		alignItems: "center",
 		backgroundColor: "#F6F6F6",
@@ -147,7 +147,8 @@ const styles = StyleSheet.create({
 	wrapBtnDelete: {
 		width: 70,
 		height: 40,
-
+		marginTop: "auto",
+		marginBottom: 32,
 		justifyContent: "center",
 		alignItems: "center",
 		alignSelf: "center",

@@ -2,8 +2,8 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import { useFonts } from "expo-font";
 
-import Navigate from "./src/component/Navigate";
-import HomeIndicator from "./src/component/HomeIndicator";
+import Navigate from "./src/navigation/Navigate";
+// import HomeIndicator from "./src/component/HomeIndicator";
 
 const App = () => {
 	const [fontsLoaded] = useFonts({
@@ -19,7 +19,7 @@ const App = () => {
 		<View style={styles.container}>
 			<Navigate />
 			<StatusBar style="auto" />
-			<HomeIndicator />
+			{/* <HomeIndicator /> */}
 		</View>
 	);
 };
