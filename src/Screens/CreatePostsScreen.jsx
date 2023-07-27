@@ -9,49 +9,64 @@ import {
 	Keyboard,
 	KeyboardAvoidingView,
 	Platform,
+	ScrollView,
 } from "react-native";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 
 const CreatePostsScreen = () => {
 	const [name, setName] = useState("");
 	const [location, setLocation] = useState("");
+	const [activeInput, setActiveInput] = useState("");
+
+	const handleFocus = name => {
+		setActiveInput(name);
+	};
+
+	const handleBlur = () => {
+		setActiveInput("");
+	};
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<KeyboardAvoidingView
 				style={styles.container}
 				behavior={Platform.OS == "ios" ? "padding" : "height"}
-				// keyboardVerticalOffset={-60}
+				// keyboardVerticalOffset={-270}
 			>
-				<View style={styles.wrapBoxFoto}>
-					<View style={styles.boxFoto}></View>
-					<View style={styles.wrapIconCamera}>
-						<MaterialIcons name="camera-alt" size={24} color="#BDBDBD" />
+				<ScrollView contentContainerStyle={styles.scrollContent}>
+					<View>
+						<View style={styles.boxFoto}></View>
+						<View style={styles.wrapIconCamera}>
+							<MaterialIcons name="camera-alt" size={24} color="#BDBDBD" />
+						</View>
+						<Text style={styles.labelBoxFoto}>Завантажте фото</Text>
 					</View>
-				</View>
-
-				<Text style={styles.labelBoxFoto}>Завантажте фото</Text>
-				<View style={styles.form}>
-					<TextInput
-						value={name}
-						style={styles.input}
-						onChangeText={text => setName(text.trim())}
-						placeholder="Назва..."
-					/>
-					<TextInput
-						value={location}
-						style={[styles.input, styles.inputTab]}
-						onChangeText={text => setLocation(text.trim())}
-						placeholder="Місцевість..."
-					/>
-					<Feather name="map-pin" size={24} style={styles.mapIcon} color="#BDBDBD" />
-				</View>
-				<TouchableOpacity style={styles.btn}>
-					<Text style={styles.btnText}>Опубліковати</Text>
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.wrapBtnDelete}>
-					<Feather name="trash-2" size={22} color="#BDBDBD" />
-				</TouchableOpacity>
+					<View style={styles.form}>
+						<TextInput
+							value={name}
+							style={[styles.input, activeInput === "caption" && styles.inputActive]}
+							onFocus={() => handleFocus("caption")}
+							onBlur={handleBlur}
+							onChangeText={text => setName(text.trim())}
+							placeholder="Назва..."
+						/>
+						<TextInput
+							value={location}
+							style={[styles.input, styles.inputTab, activeInput === "location" && styles.inputActive]}
+							onFocus={() => handleFocus("location")}
+							onBlur={handleBlur}
+							onChangeText={text => setLocation(text.trim())}
+							placeholder="Місцевість..."
+						/>
+						<Feather name="map-pin" size={24} style={styles.mapIcon} color="#BDBDBD" />
+					</View>
+					<TouchableOpacity style={styles.btn}>
+						<Text style={styles.btnText}>Опубліковати</Text>
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.wrapBtnDelete}>
+						<Feather name="trash-2" size={22} color="#BDBDBD" />
+					</TouchableOpacity>
+				</ScrollView>
 			</KeyboardAvoidingView>
 		</TouchableWithoutFeedback>
 	);
@@ -62,17 +77,21 @@ export default CreatePostsScreen;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		justifyContent: "space-between",
 		paddingHorizontal: 16,
+		paddingTop: 32,
+		paddingBottom: 34,
 		backgroundColor: "#ffffff",
 	},
 
-	wrapBoxFoto: {
-		marginTop: 32,
-		marginBottom: 8,
+	scrollContent: {
+		flexGrow: 1,
+		justifyContent: "space-between",
 	},
 
 	boxFoto: {
 		height: 240,
+		width: "100%",
 		borderWidth: 1,
 		borderColor: "#BDBDBD",
 		borderRadius: 8,
@@ -81,7 +100,7 @@ const styles = StyleSheet.create({
 
 	wrapIconCamera: {
 		position: "absolute",
-		bottom: 100,
+		bottom: 120,
 		width: 60,
 		height: 60,
 		borderRadius: 100,
@@ -92,6 +111,7 @@ const styles = StyleSheet.create({
 	},
 
 	labelBoxFoto: {
+		marginTop: 8,
 		fontSize: 16,
 		lineHeight: 18.75,
 		color: "#BDBDBD",
@@ -106,11 +126,16 @@ const styles = StyleSheet.create({
 
 	input: {
 		height: 50,
+		width: "100%",
 		borderBottomColor: "#BDBDBD",
 		borderBottomWidth: 1,
 		fontSize: 16,
 		lineHeight: 18.75,
 		color: "#212121",
+	},
+
+	inputActive: {
+		borderBottomColor: "#FF6C00",
 	},
 
 	inputTab: {
@@ -119,6 +144,7 @@ const styles = StyleSheet.create({
 
 	btn: {
 		height: 51,
+		marginBottom: "auto",
 		justifyContent: "center",
 		alignItems: "center",
 		backgroundColor: "#F6F6F6",
@@ -147,8 +173,7 @@ const styles = StyleSheet.create({
 	wrapBtnDelete: {
 		width: 70,
 		height: 40,
-		marginTop: "auto",
-		marginBottom: 32,
+		marginTop: 32,
 		justifyContent: "center",
 		alignItems: "center",
 		alignSelf: "center",

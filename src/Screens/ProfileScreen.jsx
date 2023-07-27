@@ -1,20 +1,47 @@
-import { StyleSheet, View, Text, ImageBackground } from "react-native";
+import { StyleSheet, View, Text, ImageBackground, FlatList } from "react-native";
 import { AntDesign, Feather } from "@expo/vector-icons";
 
 import ButtonLogOut from "../component/ButtonLogOut";
+import Post from "../component/Post";
 
 const ProfileScreen = () => {
+	const dataPosts = [
+		{
+			id: "0001",
+			title: "Ліс",
+			coments: 8,
+			likes: 153,
+			location: "Ukraine",
+		},
+		{
+			id: "0002",
+			title: "Захід на Чорному морі",
+			coments: 3,
+			likes: 200,
+			location: "Ukraine",
+		},
+		{
+			id: "0003",
+			title: "Старий будиночок у Венеції",
+			coments: 50,
+			likes: 200,
+			location: "Italy",
+		},
+	];
+
 	return (
 		<ImageBackground source={require("../../assets/images/fone.png")} style={styles.imageFone}>
 			<View style={styles.wrapContent}>
 				<ButtonLogOut style={styles.btnLogOut} />
-				<View style={styles.fotoWrapp}>
+				<View style={styles.fotoProfile}>
 					<View style={styles.addIconWrap}>
 						<AntDesign name="pluscircleo" size={25} style={styles.addIcon} />
 					</View>
 				</View>
 				<Text style={styles.title}>Natali Romanova</Text>
-				<View style={styles.boxPost}>
+				<FlatList data={dataPosts} renderItem={({ item }) => <Post item={item} />} keyExtractor={item => item.id} />
+
+				{/* <View style={styles.boxPost}>
 					<View style={styles.fotoWrap}></View>
 					<Text style={styles.labelFoto}>Підпис</Text>
 					<View style={styles.infoPost}>
@@ -31,9 +58,7 @@ const ProfileScreen = () => {
 							<Text style={styles.infoText}>Локація</Text>
 						</View>
 					</View>
-				</View>
-				<View style={styles.boxPost}></View>
-				<View style={styles.boxPost}></View>
+				</View> */}
 			</View>
 		</ImageBackground>
 	);
@@ -52,7 +77,7 @@ const styles = StyleSheet.create({
 
 	wrapContent: {
 		flex: 1,
-		gap: 32,
+		// gap: 32,
 		paddingTop: 92,
 		paddingBottom: 43,
 		marginTop: 147,
@@ -70,7 +95,7 @@ const styles = StyleSheet.create({
 		color: "#BDBDBD",
 	},
 
-	fotoWrapp: {
+	fotoProfile: {
 		width: 120,
 		height: 120,
 		backgroundColor: "#F6F6F6",
@@ -108,6 +133,7 @@ const styles = StyleSheet.create({
 		lineHeight: 35.16,
 		color: "#212121",
 		alignSelf: "center",
+		marginBottom: 32,
 	},
 
 	fotoWrap: {

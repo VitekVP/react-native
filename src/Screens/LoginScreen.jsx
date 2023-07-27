@@ -12,11 +12,9 @@ import {
 	Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { AntDesign } from "@expo/vector-icons";
 
-const RegistrationScreen = () => {
+const LoginScreen = () => {
 	const [activeInput, setActiveInput] = useState("");
-	const [login, setLogin] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
@@ -31,18 +29,17 @@ const RegistrationScreen = () => {
 
 	const handleShowPassword = () => setShowPassword(!showPassword);
 
-	const handleRegister = () => {
-		if (login === "" || email === "" || password === "") {
-			return;
-		}
+	const handleLogIn = () => {
+		// if (email === "" || password === "") {
+		// 	return;
+		// }
 
-		const formData = { login, email, password };
+		const formData = { email, password };
 
 		console.log(formData);
 
 		navigation.navigate("BottomTab");
 
-		setLogin("");
 		setEmail("");
 		setPassword("");
 	};
@@ -51,26 +48,13 @@ const RegistrationScreen = () => {
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<KeyboardAvoidingView
 				style={styles.wrapper}
-				behavior={Platform.OS === "ios" ? "padding" : "height"}
-				keyboardVerticalOffset={-203}
+				behavior={Platform.OS == "ios" ? "padding" : "height"}
+				keyboardVerticalOffset={-273}
 			>
 				<ImageBackground source={require("../../assets/images/fone.png")} style={styles.imageFone}>
-					<View style={styles.fotoWrapp}>
-						<View style={styles.addIconWrap}>
-							<AntDesign name="pluscircleo" size={25} style={styles.addIcon} />
-						</View>
-					</View>
 					<View style={styles.boxForm}>
-						<Text style={styles.title}>Реєстрація</Text>
+						<Text style={styles.title}>Увійти</Text>
 						<View style={styles.form}>
-							<TextInput
-								value={login}
-								style={[styles.input, activeInput === "login" && styles.activeInput]}
-								onFocus={() => handleFocus("login")}
-								onBlur={handleBlur}
-								onChangeText={text => setLogin(text.trim())}
-								placeholder="Логін"
-							/>
 							<TextInput
 								value={email}
 								style={[styles.input, activeInput === "email" && styles.activeInput]}
@@ -86,8 +70,8 @@ const RegistrationScreen = () => {
 									style={[styles.input, activeInput === "password" && styles.activeInput]}
 									onFocus={() => handleFocus("password")}
 									onBlur={handleBlur}
-									secureTextEntry={!showPassword}
 									onChangeText={text => setPassword(text.trim())}
+									secureTextEntry={!showPassword}
 									placeholder="Пароль"
 								/>
 								<TouchableOpacity style={styles.formTextWrap} onPress={handleShowPassword}>
@@ -95,11 +79,11 @@ const RegistrationScreen = () => {
 								</TouchableOpacity>
 							</View>
 						</View>
-						<TouchableOpacity style={styles.btn} onPress={handleRegister}>
-							<Text style={styles.btnText}>Зареєстуватися</Text>
+						<TouchableOpacity style={styles.btn} onPress={handleLogIn}>
+							<Text style={styles.btnText}>Увійти</Text>
 						</TouchableOpacity>
-						<TouchableOpacity onPress={() => navigation.navigate("Login")}>
-							<Text style={styles.textLink}>Вже є акаунт? Увійти</Text>
+						<TouchableOpacity onPress={() => navigation.navigate("Registration")}>
+							<Text style={styles.textLink}>Немає акаунту? Зареєструватися</Text>
 						</TouchableOpacity>
 					</View>
 				</ImageBackground>
@@ -108,7 +92,7 @@ const RegistrationScreen = () => {
 	);
 };
 
-export default RegistrationScreen;
+export default LoginScreen;
 
 const styles = StyleSheet.create({
 	wrapper: {
@@ -124,57 +108,33 @@ const styles = StyleSheet.create({
 		width: "100%",
 	},
 
-	fotoWrapp: {
-		width: 120,
-		height: 120,
-		backgroundColor: "#F6F6F6",
-		borderRadius: 16,
-		alignSelf: "center",
-		top: 60,
-		zIndex: 1,
-	},
-
-	addIconWrap: {
-		width: 25,
-		height: 25,
-		borderRadius: 50,
-		overflow: "hidden",
-		position: "absolute",
-		bottom: 14,
-		right: -12.5,
-		zIndex: 2,
-	},
-
-	addIcon: {
-		color: "#FF6C00",
-		backgroundColor: "#ffffff",
-	},
-
 	boxForm: {
 		width: "100%",
-		// height: 549,
-		paddingTop: 92,
-		paddingHorizontal: 16,
-		paddingBottom: 78,
+		// height: 489,
+		paddingTop: 32,
+		paddingRight: 16,
+		paddingLeft: 16,
+		paddingBottom: 144,
 		backgroundColor: "#FFFFFF",
 		borderTopLeftRadius: 25,
 		borderTopRightRadius: 25,
 	},
 
 	title: {
-		marginBottom: 32,
 		alignSelf: "center",
+		marginBottom: 32,
 		fontSize: 30,
 		fontWeight: 500,
-		color: "#212121",
 		lineHeight: 35.16,
+		color: "#212121",
 	},
 
 	form: {
+		height: 116,
+		marginBottom: 43,
 		display: "flex",
 		justifyContent: "space-between",
 		gap: 16,
-		marginBottom: 43,
 	},
 
 	input: {
