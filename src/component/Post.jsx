@@ -18,7 +18,7 @@ const Post = ({ item }) => {
 					<Feather name="thumbs-up" size={24} color="#BDBDBD" />
 					<Text style={styles.infoText}>{item.likes}</Text>
 				</TouchableOpacity>
-				<TouchableOpacity style={[styles.infoItem, styles.rightItem]}>
+				<TouchableOpacity style={[styles.infoItem, styles.rightItem]} onPress={() => navigation.navigate("Map")}>
 					<Feather name="map-pin" size={24} color="#BDBDBD" />
 					<Text style={styles.infoText}>{item.location}</Text>
 				</TouchableOpacity>

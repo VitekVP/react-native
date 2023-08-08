@@ -19,6 +19,7 @@ const App = () => {
 		<View style={styles.container}>
 			<Navigate />
 			<StatusBar style="auto" />
+
 			{/* <HomeIndicator /> */}
 		</View>
 	);

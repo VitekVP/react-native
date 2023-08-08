@@ -31,6 +31,7 @@ const CommentsScreen = () => {
 				behavior={Platform.OS == "ios" ? "padding" : "height"}
 				keyboardVerticalOffset={-136}
 			>
+				<View style={styles.fotoWrap}></View>
 				<Text></Text>
 				<View>
 					<TextInput
@@ -60,6 +61,14 @@ const styles = StyleSheet.create({
 		paddingTop: 32,
 		paddingBottom: 16,
 		justifyContent: "space-between",
+	},
+
+	fotoWrap: {
+		height: 240,
+		marginBottom: 8,
+		backgroundColor: "#E8E8E8",
+		borderRadius: 8,
+		overflow: "hidden",
 	},
 
 	input: {

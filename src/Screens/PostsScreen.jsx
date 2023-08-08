@@ -28,16 +28,22 @@ const PostsScreen = () => {
 	];
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.boxUser}>
-				<View style={styles.fotoUser}></View>
-				<View>
-					<Text style={styles.nameUser}>Natali Romanova</Text>
-					<Text style={styles.emailUser}>email@example.com</Text>
+		<FlatList
+			data={dataPosts}
+			renderItem={({ item }) => <Post item={item} />}
+			keyExtractor={item => item.id}
+			showsVerticalScrollIndicator={false}
+			style={styles.container}
+			ListHeaderComponent={
+				<View style={styles.boxUser}>
+					<View style={styles.fotoUser}></View>
+					<View>
+						<Text style={styles.nameUser}>Natali Romanova</Text>
+						<Text style={styles.emailUser}>email@example.com</Text>
+					</View>
 				</View>
-			</View>
-			<FlatList data={dataPosts} renderItem={({ item }) => <Post item={item} />} keyExtractor={item => item.id} />
-		</View>
+			}
+		/>
 	);
 };
 
@@ -45,7 +51,7 @@ export default PostsScreen;
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+		// flex: 1,
 		backgroundColor: "white",
 		paddingHorizontal: 16,
 	},

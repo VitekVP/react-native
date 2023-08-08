@@ -38,27 +38,14 @@ const ProfileScreen = () => {
 						<AntDesign name="pluscircleo" size={25} style={styles.addIcon} />
 					</View>
 				</View>
-				<Text style={styles.title}>Natali Romanova</Text>
-				<FlatList data={dataPosts} renderItem={({ item }) => <Post item={item} />} keyExtractor={item => item.id} />
 
-				{/* <View style={styles.boxPost}>
-					<View style={styles.fotoWrap}></View>
-					<Text style={styles.labelFoto}>Підпис</Text>
-					<View style={styles.infoPost}>
-						<View style={styles.infoItem}>
-							<Feather name="message-circle" size={24} color="#BDBDBD" style={styles.iconRotate} />
-							<Text style={styles.infoText}>10</Text>
-						</View>
-						<View style={styles.infoItem}>
-							<Feather name="thumbs-up" size={24} color="#BDBDBD" />
-							<Text style={styles.infoText}>10</Text>
-						</View>
-						<View style={[styles.infoItem, styles.rightItem]}>
-							<Feather name="map-pin" size={24} color="#BDBDBD" />
-							<Text style={styles.infoText}>Локація</Text>
-						</View>
-					</View>
-				</View> */}
+				<FlatList
+					data={dataPosts}
+					renderItem={({ item }) => <Post item={item} />}
+					keyExtractor={item => item.id}
+					showsVerticalScrollIndicator={false}
+					ListHeaderComponent={<Text style={styles.title}>Natali Romanova</Text>}
+				/>
 			</View>
 		</ImageBackground>
 	);

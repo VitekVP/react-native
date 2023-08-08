@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
 	StyleSheet,
 	View,
@@ -10,20 +11,80 @@ import {
 	KeyboardAvoidingView,
 	Platform,
 	ScrollView,
+	ImageBackground,
 } from "react-native";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
+import { Camera } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
+import * as Location from "expo-location";
 
 const CreatePostsScreen = () => {
-	const [name, setName] = useState("");
-	const [location, setLocation] = useState("");
+	const [namePost, setNamePost] = useState("");
+	const [locationPost, setLocationPost] = useState("");
 	const [activeInput, setActiveInput] = useState("");
+	const navigation = useNavigation();
 
-	const handleFocus = name => {
-		setActiveInput(name);
+	const [hasPermission, setHasPermission] = useState(null);
+	const [type, setType] = useState(Camera.Constants.Type.back);
+	const [fotoPost, setFotoPost] = useState("");
+	const cameraRef = useRef();
+	const [location, setLocation] = useState(null);
+
+	useEffect(() => {
+		(async () => {
+			const { status } = await Camera.requestCameraPermissionsAsync();
+			await MediaLibrary.requestPermissionsAsync();
+			setHasPermission(status === "granted");
+		})();
+		return handleReset;
+	}, []);
+
+	useEffect(() => {
+		(async () => {
+			let { status } = await Location.requestForegroundPermissionsAsync();
+			if (status !== "granted") {
+				console.log("Permission to access location was denied");
+			}
+			let location = await Location.getCurrentPositionAsync({});
+			const coords = {
+				latitude: location.coords.latitude,
+				longitude: location.coords.longitude,
+			};
+			setLocation(coords);
+		})();
+	}, []);
+
+	if (hasPermission === null) {
+		return <View />;
+	}
+	if (hasPermission === false) {
+		return <Text>No access to camera</Text>;
+	}
+
+	const handleFocus = namePost => {
+		setActiveInput(namePost);
 	};
 
 	const handleBlur = () => {
 		setActiveInput("");
+	};
+
+	const handleSubmit = () => {
+		const post = {
+			title: namePost,
+			location: locationPost,
+			foto: fotoPost,
+			locationData: location,
+		};
+		console.log(post);
+		handleReset();
+		navigation.navigate("Posts");
+	};
+
+	const handleReset = () => {
+		setNamePost("");
+		setLocationPost("");
+		setFotoPost("");
 	};
 
 	return (
@@ -34,36 +95,56 @@ const CreatePostsScreen = () => {
 				// keyboardVerticalOffset={-270}
 			>
 				<ScrollView contentContainerStyle={styles.scrollContent}>
-					<View>
-						<View style={styles.boxFoto}></View>
-						<View style={styles.wrapIconCamera}>
-							<MaterialIcons name="camera-alt" size={24} color="#BDBDBD" />
+					<View style={styles.boxImage}>
+						<View style={styles.boxFoto}>
+							{!fotoPost ? (
+								<Camera style={styles.camera} type={type} ref={cameraRef} />
+							) : (
+								<ImageBackground source={{ uri: fotoPost }} style={styles.foto} />
+							)}
 						</View>
-						<Text style={styles.labelBoxFoto}>Завантажте фото</Text>
+						<TouchableOpacity
+							style={styles.wrapIconCamera}
+							disabled={fotoPost ? true : false}
+							onPress={async () => {
+								if (cameraRef) {
+									const { uri } = await cameraRef.current.takePictureAsync();
+									await MediaLibrary.createAssetAsync(uri);
+									setFotoPost(uri);
+								}
+							}}
+						>
+							<MaterialIcons name="camera-alt" size={24} color="#FFFFFF" />
+						</TouchableOpacity>
+						<Text style={styles.labelBoxFoto}>{!fotoPost ? "Завантажте фото" : "Редагувати фото"}</Text>
 					</View>
 					<View style={styles.form}>
 						<TextInput
-							value={name}
+							value={namePost}
 							style={[styles.input, activeInput === "caption" && styles.inputActive]}
 							onFocus={() => handleFocus("caption")}
 							onBlur={handleBlur}
-							onChangeText={text => setName(text.trim())}
+							onChangeText={text => setNamePost(text.trim())}
 							placeholder="Назва..."
 						/>
 						<TextInput
-							value={location}
-							style={[styles.input, styles.inputTab, activeInput === "location" && styles.inputActive]}
-							onFocus={() => handleFocus("location")}
+							value={locationPost}
+							style={[styles.input, styles.inputTab, activeInput === "locationPost" && styles.inputActive]}
+							onFocus={() => handleFocus("locationPost")}
 							onBlur={handleBlur}
-							onChangeText={text => setLocation(text.trim())}
+							onChangeText={text => setLocationPost(text.trim())}
 							placeholder="Місцевість..."
 						/>
 						<Feather name="map-pin" size={24} style={styles.mapIcon} color="#BDBDBD" />
 					</View>
-					<TouchableOpacity style={styles.btn}>
-						<Text style={styles.btnText}>Опубліковати</Text>
+					<TouchableOpacity
+						style={[styles.btn, fotoPost && styles.btnActive]}
+						disabled={!fotoPost}
+						onPress={handleSubmit}
+					>
+						<Text style={[styles.btnText, fotoPost && styles.btnTextActive]}> Опубліковати</Text>
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.wrapBtnDelete}>
+					<TouchableOpacity style={styles.wrapBtnDelete} onPress={handleReset}>
 						<Feather name="trash-2" size={22} color="#BDBDBD" />
 					</TouchableOpacity>
 				</ScrollView>
@@ -79,7 +160,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "space-between",
 		paddingHorizontal: 16,
-		paddingTop: 32,
+		// paddingTop: 32,
 		paddingBottom: 34,
 		backgroundColor: "#ffffff",
 	},
@@ -89,6 +170,10 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 	},
 
+	boxImage: {
+		paddingTop: 32,
+	},
+
 	boxFoto: {
 		height: 240,
 		width: "100%",
@@ -96,6 +181,13 @@ const styles = StyleSheet.create({
 		borderColor: "#BDBDBD",
 		borderRadius: 8,
 		backgroundColor: "#E8E8E8",
+		overflow: "hidden",
+	},
+
+	camera: { flex: 1 },
+
+	foto: {
+		flex: 1,
 	},
 
 	wrapIconCamera: {
@@ -104,7 +196,7 @@ const styles = StyleSheet.create({
 		width: 60,
 		height: 60,
 		borderRadius: 100,
-		backgroundColor: "#ffffff",
+		backgroundColor: "#ffffff4d",
 		justifyContent: "center",
 		alignItems: "center",
 		alignSelf: "center",

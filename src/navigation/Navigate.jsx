@@ -41,11 +41,11 @@ const Navigate = () => {
 				<Stack.Screen
 					name="Map"
 					component={MapScreen}
-					// options={{
-					// 	headerShown: true,
-					// 	title: "Мапа",
-					// 	headerLeft: () => <ButtonGoBack />,
-					// }}
+					options={{
+						headerShown: true,
+						title: "Мапа",
+						headerLeft: () => <ButtonGoBack />,
+					}}
 				/>
 			</Stack.Navigator>
 		</NavigationContainer>
