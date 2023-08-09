@@ -65,9 +65,9 @@ const styles = StyleSheet.create({
 	wrapContent: {
 		flex: 1,
 		// gap: 32,
-		paddingTop: 92,
-		paddingBottom: 43,
-		marginTop: 147,
+		paddingTop: 76,
+		paddingBottom: 16,
+		marginTop: 103,
 		width: "100%",
 		paddingHorizontal: 16,
 		backgroundColor: "#FFFFFF",
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
 		lineHeight: 35.16,
 		color: "#212121",
 		alignSelf: "center",
-		marginBottom: 32,
+		marginBottom: 16,
 	},
 
 	fotoWrap: {

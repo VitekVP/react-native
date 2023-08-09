@@ -12,6 +12,7 @@ import {
 	Platform,
 	ScrollView,
 	ImageBackground,
+	ActivityIndicator,
 } from "react-native";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
@@ -22,13 +23,13 @@ const CreatePostsScreen = () => {
 	const [namePost, setNamePost] = useState("");
 	const [locationPost, setLocationPost] = useState("");
 	const [activeInput, setActiveInput] = useState("");
-	const navigation = useNavigation();
-
+	const [location, setLocation] = useState(null);
 	const [hasPermission, setHasPermission] = useState(null);
 	const [type, setType] = useState(Camera.Constants.Type.back);
 	const [fotoPost, setFotoPost] = useState("");
+	const [load, setLoad] = useState(false);
 	const cameraRef = useRef();
-	const [location, setLocation] = useState(null);
+	const navigation = useNavigation();
 
 	useEffect(() => {
 		(async () => {
@@ -87,6 +88,16 @@ const CreatePostsScreen = () => {
 		setFotoPost("");
 	};
 
+	const handleClickCamera = async () => {
+		if (cameraRef) {
+			setLoad(true);
+			const { uri } = await cameraRef.current.takePictureAsync();
+			await MediaLibrary.createAssetAsync(uri);
+			setLoad(false);
+			setFotoPost(uri);
+		}
+	};
+
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<KeyboardAvoidingView
@@ -94,7 +105,7 @@ const CreatePostsScreen = () => {
 				behavior={Platform.OS == "ios" ? "padding" : "height"}
 				// keyboardVerticalOffset={-270}
 			>
-				<ScrollView contentContainerStyle={styles.scrollContent}>
+				<ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
 					<View style={styles.boxImage}>
 						<View style={styles.boxFoto}>
 							{!fotoPost ? (
@@ -104,18 +115,18 @@ const CreatePostsScreen = () => {
 							)}
 						</View>
 						<TouchableOpacity
-							style={styles.wrapIconCamera}
+							style={[styles.wrapIconCamera, fotoPost && styles.wrapIconCameraDisabled]}
 							disabled={fotoPost ? true : false}
-							onPress={async () => {
-								if (cameraRef) {
-									const { uri } = await cameraRef.current.takePictureAsync();
-									await MediaLibrary.createAssetAsync(uri);
-									setFotoPost(uri);
-								}
-							}}
+							onPress={handleClickCamera}
 						>
-							<MaterialIcons name="camera-alt" size={24} color="#FFFFFF" />
+							<MaterialIcons
+								name="camera-alt"
+								size={24}
+								style={[styles.iconCamera, fotoPost && styles.iconCameraDisabled]}
+							/>
+							{load && <ActivityIndicator size="large" style={{ position: "absolute" }} color="#FF6C00" />}
 						</TouchableOpacity>
+
 						<Text style={styles.labelBoxFoto}>{!fotoPost ? "Завантажте фото" : "Редагувати фото"}</Text>
 					</View>
 					<View style={styles.form}>
@@ -196,10 +207,22 @@ const styles = StyleSheet.create({
 		width: 60,
 		height: 60,
 		borderRadius: 100,
-		backgroundColor: "#ffffff4d",
+		backgroundColor: "#FFFFFF",
 		justifyContent: "center",
 		alignItems: "center",
 		alignSelf: "center",
+	},
+
+	wrapIconCameraDisabled: {
+		backgroundColor: "#ffffff4d",
+	},
+
+	iconCamera: {
+		color: "#BDBDBD",
+	},
+
+	iconCameraDisabled: {
+		color: "#FFFFFF",
 	},
 
 	labelBoxFoto: {
@@ -265,7 +288,7 @@ const styles = StyleSheet.create({
 	wrapBtnDelete: {
 		width: 70,
 		height: 40,
-		marginTop: 32,
+		marginTop: 12,
 		justifyContent: "center",
 		alignItems: "center",
 		alignSelf: "center",

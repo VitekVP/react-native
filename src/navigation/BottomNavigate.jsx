@@ -35,6 +35,7 @@ const BottomNavigate = () => {
 						title: "Створити публікацію",
 						tabBarIcon: ({ color }) => <AntDesign name="plus" size={24} color={color} />,
 						headerLeft: () => <ButtonGoBack />,
+						unmountOnBlur: true,
 						tabBarStyle: { display: "none" },
 					}}
 				/>
