@@ -25,7 +25,7 @@ const CommentsScreen = () => {
 	};
 
 	return (
-		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+		<>
 			<KeyboardAvoidingView
 				style={styles.container}
 				behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -42,12 +42,12 @@ const CommentsScreen = () => {
 						onChangeText={text => setName(text.trim())}
 						placeholder="Коментувати..."
 					/>
-					<TouchableOpacity style={styles.btn}>
+					<TouchableOpacity style={styles.btn} onPress={Keyboard.dismiss}>
 						<AntDesign name="arrowup" size={22} color="#FFFFFF" />
 					</TouchableOpacity>
 				</View>
 			</KeyboardAvoidingView>
-		</TouchableWithoutFeedback>
+		</>
 	);
 };
 

@@ -1,5 +1,5 @@
-import { StyleSheet, View, Text, ImageBackground, FlatList } from "react-native";
-import { AntDesign, Feather } from "@expo/vector-icons";
+import { StyleSheet, View, Text, ImageBackground, ScrollView } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 
 import ButtonLogOut from "../component/ButtonLogOut";
 import Post from "../component/Post";
@@ -31,22 +31,20 @@ const ProfileScreen = () => {
 
 	return (
 		<ImageBackground source={require("../../assets/images/fone.png")} style={styles.imageFone}>
-			<View style={styles.wrapContent}>
-				<ButtonLogOut style={styles.btnLogOut} />
-				<View style={styles.fotoProfile}>
-					<View style={styles.addIconWrap}>
-						<AntDesign name="pluscircleo" size={25} style={styles.addIcon} />
+			<ScrollView showsVerticalScrollIndicator={false}>
+				<View style={styles.wrapContent}>
+					<ButtonLogOut style={styles.btnLogOut} />
+					<View style={styles.fotoProfile}>
+						<View style={styles.addIconWrap}>
+							<AntDesign name="pluscircleo" size={25} style={styles.addIcon} />
+						</View>
 					</View>
+					<Text style={styles.title}>Natali Romanova</Text>
+					{dataPosts.map(post => {
+						return <Post key={post.id} item={post} />;
+					})}
 				</View>
-
-				<FlatList
-					data={dataPosts}
-					renderItem={({ item }) => <Post item={item} />}
-					keyExtractor={item => item.id}
-					showsVerticalScrollIndicator={false}
-					ListHeaderComponent={<Text style={styles.title}>Natali Romanova</Text>}
-				/>
-			</View>
+			</ScrollView>
 		</ImageBackground>
 	);
 };
@@ -62,12 +60,17 @@ const styles = StyleSheet.create({
 		width: "100%",
 	},
 
+	// scrollContent: {
+	// 	flexGrow: 1,
+	// 	justifyContent: "space-between",
+	// },
+
 	wrapContent: {
 		flex: 1,
 		// gap: 32,
-		paddingTop: 76,
+		paddingTop: 92,
 		paddingBottom: 16,
-		marginTop: 103,
+		marginTop: 147,
 		width: "100%",
 		paddingHorizontal: 16,
 		backgroundColor: "#FFFFFF",
@@ -120,7 +123,7 @@ const styles = StyleSheet.create({
 		lineHeight: 35.16,
 		color: "#212121",
 		alignSelf: "center",
-		marginBottom: 16,
+		marginBottom: 32,
 	},
 
 	fotoWrap: {
