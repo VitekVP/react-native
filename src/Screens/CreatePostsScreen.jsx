@@ -33,25 +33,33 @@ const CreatePostsScreen = () => {
 
 	useEffect(() => {
 		(async () => {
-			const { status } = await Camera.requestCameraPermissionsAsync();
-			await MediaLibrary.requestPermissionsAsync();
-			setHasPermission(status === "granted");
+			try {
+				const { status } = await Camera.requestCameraPermissionsAsync();
+				await MediaLibrary.requestPermissionsAsync();
+				setHasPermission(status === "granted");
+			} catch (error) {
+				console.log(error.message);
+			}
 		})();
 		return handleReset;
 	}, []);
 
 	useEffect(() => {
 		(async () => {
-			let { status } = await Location.requestForegroundPermissionsAsync();
-			if (status !== "granted") {
-				console.log("Permission to access location was denied");
+			try {
+				let { status } = await Location.requestForegroundPermissionsAsync();
+				if (status !== "granted") {
+					console.log("Permission to access location was denied");
+				}
+				let location = await Location.getCurrentPositionAsync({});
+				const coords = {
+					latitude: location.coords.latitude,
+					longitude: location.coords.longitude,
+				};
+				setLocation(coords);
+			} catch (error) {
+				console.log(error.message);
 			}
-			let location = await Location.getCurrentPositionAsync({});
-			const coords = {
-				latitude: location.coords.latitude,
-				longitude: location.coords.longitude,
-			};
-			setLocation(coords);
 		})();
 	}, []);
 
@@ -91,11 +99,21 @@ const CreatePostsScreen = () => {
 	const handleClickCamera = async () => {
 		if (cameraRef) {
 			setLoad(true);
-			const { uri } = await cameraRef.current.takePictureAsync();
-			await MediaLibrary.createAssetAsync(uri);
-			setLoad(false);
-			setFotoPost(uri);
+
+			try {
+				const { uri } = await cameraRef.current.takePictureAsync();
+				await MediaLibrary.createAssetAsync(uri);
+				setLoad(false);
+				setFotoPost(uri);
+			} catch (error) {
+				setLoad(false);
+				console.log(error.message);
+			}
 		}
+	};
+
+	const handleRetryCamera = () => {
+		setFotoPost("");
 	};
 
 	return (
@@ -116,8 +134,8 @@ const CreatePostsScreen = () => {
 						</View>
 						<TouchableOpacity
 							style={[styles.wrapIconCamera, fotoPost && styles.wrapIconCameraDisabled]}
-							disabled={fotoPost ? true : false}
-							onPress={handleClickCamera}
+							// disabled={fotoPost ? true : false}
+							onPress={fotoPost ? handleRetryCamera : handleClickCamera}
 						>
 							<MaterialIcons
 								name="camera-alt"

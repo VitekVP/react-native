@@ -4,7 +4,6 @@ import {
 	View,
 	TextInput,
 	TouchableOpacity,
-	TouchableWithoutFeedback,
 	Keyboard,
 	KeyboardAvoidingView,
 	Platform,
@@ -17,6 +16,7 @@ const CommentsScreen = () => {
 	const [activeInput, setActiveInput] = useState("");
 
 	const handleFocus = name => {
+		Keyboard.dismiss;
 		setActiveInput(name);
 	};
 
@@ -24,12 +24,24 @@ const CommentsScreen = () => {
 		setActiveInput("");
 	};
 
+	const handleCreatеComment = () => {
+		Keyboard.dismiss;
+
+		const newComment = {
+			comment,
+		};
+
+		console.log(newComment);
+
+		setComment("");
+	};
+
 	return (
 		<>
 			<KeyboardAvoidingView
 				style={styles.container}
 				behavior={Platform.OS == "ios" ? "padding" : "height"}
-				keyboardVerticalOffset={-136}
+				keyboardVerticalOffset={-106}
 			>
 				<View style={styles.fotoWrap}></View>
 				<Text></Text>
@@ -39,10 +51,10 @@ const CommentsScreen = () => {
 						style={[styles.input, activeInput === "comment" && styles.inputActive]}
 						onFocus={() => handleFocus("comment")}
 						onBlur={handleBlur}
-						onChangeText={text => setName(text.trim())}
+						onChangeText={text => setComment(text)}
 						placeholder="Коментувати..."
 					/>
-					<TouchableOpacity style={styles.btn} onPress={Keyboard.dismiss}>
+					<TouchableOpacity style={styles.btn} onPress={handleCreatеComment}>
 						<AntDesign name="arrowup" size={22} color="#FFFFFF" />
 					</TouchableOpacity>
 				</View>
